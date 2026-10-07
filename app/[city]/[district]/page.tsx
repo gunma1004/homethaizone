@@ -263,7 +263,7 @@ export default async function DistrictPage({ params }: PageProps) {
           </p>
         </section>
 
-        {/* 🌟 SEO 핵심: 관할 동(洞) 리스트 바로가기 (크롤러 색인 트리의 핵심) */}
+        {/* 관할 동 리스트 */}
         <section className="bg-[#121214] border border-white/10 p-6 rounded-3xl space-y-4">
           <div className="flex justify-between items-center border-b border-white/5 pb-3">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -291,7 +291,7 @@ export default async function DistrictPage({ params }: PageProps) {
           district={district}
         />
 
-        {/* 🌟 SEO 누락 방지 1: 구 단위 방문 안내 (텍스트 볼륨) */}
+        {/* 안심 방문 케어 특징 */}
         <section className="bg-[#121214] border border-white/10 p-6 md:p-8 rounded-3xl space-y-4">
           <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
             <span className="text-amber-400">🛡️</span> {districtName} 안심 방문 케어 특징
@@ -318,7 +318,7 @@ export default async function DistrictPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 🌟 SEO 누락 방지 2: 구 단위 FAQ */}
+        {/* 구 단위 FAQ */}
         <section className="bg-[#121214] border border-white/10 p-6 md:p-8 rounded-3xl space-y-4">
           <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
             <span className="text-amber-400">❓</span> {districtName} 출장마사지 자주 묻는 질문
@@ -339,7 +339,7 @@ export default async function DistrictPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 🌟 SEO 누락 방지 3: 인접 구 연계 내부 링크 */}
+        {/* 인접 구 연계 내부 링크 */}
         {otherDistricts.length > 0 && (
           <section className="bg-[#121214] border border-white/10 p-5 md:p-6 rounded-3xl space-y-3">
             <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
@@ -362,5 +362,11 @@ export default async function DistrictPage({ params }: PageProps) {
         )}
       </main>
 
-      {/* 푸터 */}
-      <footer className="bg-[#030303] border-t border-white/10 py-8 text-center
+      {/* 푸터 (오류 수정 지점: 한 줄로 온전하게 닫힘) */}
+      <footer className="bg-[#030303] border-t border-white/10 py-8 text-center text-xs text-gray-500 mt-20">
+        <p className="font-bold text-gray-400">{SITE_NAME} · {cityName} {districtName} 100% 안심 후불제 출장 홈케어</p>
+        <p className="text-[11px] text-gray-600 mt-1">© 2026 {SITE_NAME}. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}

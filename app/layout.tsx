@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   verification: {
     other: {
       // 네이버 서치어드바이저 등록 후 발급받은 키를 넣어주세요
-      "naver-site-verification": "010088b2fbc53a255b4daef4634a494887e6fc1c",
+      "naver-site-verification": "1e793a8b3340c6956056198e4b985be1db40a74b",
     },
   },
   openGraph: {
