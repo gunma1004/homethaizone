@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #08080a;
+  --foreground: #f3f4f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, "Noto Sans KR", "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #08080a;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 텍스트 선택(드래그) 시 골드 포인트 */
+::selection {
+  background-color: #f59e0b;
+  color: #000000;
+}
+
+/* 스크롤바 미세 커스텀 (다크 모드 최적화) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
