@@ -112,7 +112,7 @@ export default function MainClientUI() {
                 {distVal.dongs.map((dong, idx) => (
                   <Link
                     key={idx}
-                    href={`/${activeSido}/${distKey}?dong=${encodeURIComponent(dong)}`}
+                    href={`/${activeSido}/${distKey}/${encodeURIComponent(dong)}`}
                     className="px-3 py-1.5 rounded-xl border border-white/10 bg-black/40 text-xs font-medium text-gray-300 hover:bg-amber-500/10 hover:text-amber-400 hover:border-amber-500/40 transition-all"
                   >
                     {dong}
