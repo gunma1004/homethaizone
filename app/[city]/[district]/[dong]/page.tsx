@@ -15,41 +15,15 @@ interface PageProps {
 const SITE_URL = "https://homethaizone.netlify.app";
 const SITE_NAME = "홈타이존";
 
-// 🌟 1단: '{dongName} 출장 [키워드] 마사지·홈타이 | {districtName} 안마 업체 | 홈타이존' 수식어 패턴 (30종)
 const serviceKeywordPatterns = [
-  "맞춤",
-  "홈스파",
-  "타이스웨디시",
-  "프리미엄",
-  "릴렉싱",
-  "아로마케어",
-  "감성힐링",
-  "밸런스케어",
-  "딥티슈",
-  "바디컨디션",
-  "전신힐링",
-  "스페셜",
-  "호텔식",
-  "프라이빗",
-  "웰니스",
-  "소프트터치",
-  "오일바디",
-  "활력충전",
-  "체형맞춤",
-  "건식타이",
-  "명품힐링",
-  "안심방문",
-  "집중관리",
-  "근육이완",
-  "스트레칭",
-  "피로회복",
-  "림프순환",
-  "시그니처",
-  "베이직힐링",
-  "VIP바디"
+  "맞춤", "홈스파", "타이스웨디시", "프리미엄", "릴렉싱",
+  "아로마케어", "감성힐링", "밸런스케어", "딥티슈", "바디컨디션",
+  "전신힐링", "스페셜", "호텔식", "프라이빗", "웰니스",
+  "소프트터치", "오일바디", "활력충전", "체형맞춤", "건식타이",
+  "명품힐링", "안심방문", "집중관리", "근육이완", "스트레칭",
+  "피로회복", "림프순환", "시그니처", "베이직힐링", "VIP바디"
 ];
 
-// 🌟 5개 공식 제휴 샵 기본 데이터
 const rawShopsData: Record<string, Omit<ShopItem, "id">> = {
   "1": {
     name: "한국골든테라피",
@@ -321,17 +295,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const keywordIdx = charSum % serviceKeywordPatterns.length;
   const keyword = serviceKeywordPatterns[keywordIdx];
 
-  // 🌟 요청하신 타이틀 형식:
-  // {dongName} 출장 {keyword} 마사지·홈타이 | {districtName} 안마 업체 | 홈타이존
   const finalTitle = `${dongName} 출장 ${keyword} 마사지·홈타이 | ${districtName} 안마 업체 | ${SITE_NAME}`;
 
-  // 🌟 요청하신 메타 디스크립션 3가지 패턴 순환
   const descType = charSum % 3;
   let finalDescription = "";
   if (descType === 0) {
     finalDescription = `${cityName} ${districtName} ${dongName} 출장 마사지·홈타이·안마. 건식 7만원부터 심야할증 없이 방문. 가까운 업체를 투명한 가격으로 안내합니다.`;
   } else if (descType === 1) {
-    finalDescription = `${SITE_NAME}에서 ${cityName} ${districtName} ${dongName} 출장마사지와 스웨디시를 경험하세요. 프로 관리사가 고객님의 집, 호텔, 오피스로 직접 방문. 코스·가격과 관리사 정보를 확인하고 전화·카카오톡으로 예약하세요.`;
+    finalDescription = `${SITE_NAME}에서 ${cityName} ${districtName} ${dongName} 출장마사지와 스웨디시를 경험하세요. 프로 관리사가 고객님의 집, 호텔, 오피스로 직접 방문. 코스·가격과 관리사 정보를 확인하고 전화·문자로 예약하세요.`;
   } else {
     finalDescription = `${SITE_NAME} - 선입금 없는 100% 후불제 ${cityName} ${districtName} ${dongName} 출장마사지 안내. 25분 내 빠른 방문과 투명한 정찰제로 편안한 휴식을 누려보세요.`;
   }
@@ -377,13 +348,39 @@ export default async function DongMainPage({ params }: PageProps) {
 
   const fullLocation = `${cityName} ${districtName} ${dongName}`;
 
+  // 인접 동 리스트 추출 (현재 동 제외)
+  const nearbyDongs = (districtInfo?.dongs || []).filter(d => d !== dongName).slice(0, 10);
+
   const shops: ShopItem[] = Object.entries(rawShopsData).map(([id, data]) => ({
     id,
     ...data,
   }));
 
+  // JSON-LD 구조화 데이터 (검색엔진에 지역 비즈니스로 신뢰도 제공)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `${fullLocation} 출장 홈케어 서비스`,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": SITE_NAME,
+      "telephone": "0507-1280-3199",
+      "url": SITE_URL
+    },
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": fullLocation
+    },
+    "description": `${fullLocation} 전 지역 100% 안심 후불제 출장 홈타이 및 바디케어 서비스 안내`
+  };
+
   return (
     <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* 상단 헤더 */}
       <header className="bg-[#050505]/90 border-b border-amber-500/20 backdrop-blur-xl sticky top-0 z-40 px-4 py-3 shadow-[0_4px_20px_rgba(245,158,11,0.08)]">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
@@ -412,7 +409,7 @@ export default async function DongMainPage({ params }: PageProps) {
         </div>
       </header>
 
-      {/* 브레드크럼 */}
+      {/* 브레드크럼 (SEO 필수 내부 링크 구조) */}
       <nav className="bg-[#0c0c0e] border-b border-white/5 py-2.5 px-4 text-xs text-gray-400">
         <div className="max-w-4xl mx-auto flex items-center gap-2">
           <Link href="/" className="text-amber-400 hover:underline">홈</Link>
@@ -425,7 +422,8 @@ export default async function DongMainPage({ params }: PageProps) {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-10">
+        
         {/* 인트로 히어로 배너 */}
         <section className="relative rounded-3xl overflow-hidden border border-amber-500/30 shadow-lg bg-gradient-to-b from-[#141418] to-[#0a0a0c] p-6 md:p-8 text-center md:text-left space-y-3">
           <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -440,7 +438,7 @@ export default async function DongMainPage({ params }: PageProps) {
           </p>
         </section>
 
-        {/* 셔플 제휴 샵 목록 */}
+        {/* 제휴 샵 목록 */}
         <RandomShopList 
           initialShops={shops} 
           fullLocation={fullLocation} 
@@ -448,6 +446,83 @@ export default async function DongMainPage({ params }: PageProps) {
           district={district} 
           dong={dong} 
         />
+
+        {/* 🌟 SEO 누락 방지 1: 동별 고유 방문 환경 및 진행 가이드 (콘텐츠 볼륨 확보) */}
+        <section className="bg-[#121214] border border-white/10 p-6 md:p-8 rounded-3xl space-y-4 shadow-md">
+          <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
+            <span className="text-amber-400">🏢</span> {dongName} 방문 이용 안내 및 준비사항
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-gray-300 pt-2">
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1.5">
+              <span className="font-bold text-amber-400 block text-sm">자택 및 오피스텔</span>
+              <p className="text-gray-400 leading-relaxed">
+                매트 및 오일, 타월 등 모든 케어 용품을 테라피스트가 직접 지참하여 방문하므로 편안한 휴식 공간만 준비해 주시면 됩니다.
+              </p>
+            </div>
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1.5">
+              <span className="font-bold text-amber-400 block text-sm">호텔 및 비즈니스 숙소</span>
+              <p className="text-gray-400 leading-relaxed">
+                {dongName} 관내 비즈니스호텔 및 숙박시설에서도 호실 확인 후 신속하게 입실하여 피로 회복 케어를 도와드립니다.
+              </p>
+            </div>
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1.5">
+              <span className="font-bold text-amber-400 block text-sm">25분 신속 도착 시스템</span>
+              <p className="text-gray-400 leading-relaxed">
+                {districtName} 인근 상주 기사 및 테라피스트 배정으로 호출 즉시 평균 20~30분 내 약속된 장소로 도착합니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 🌟 SEO 누락 방지 2: 지역 검색 맞춤 FAQ (고품질 텍스트 확보) */}
+        <section className="bg-[#121214] border border-white/10 p-6 md:p-8 rounded-3xl space-y-4 shadow-md">
+          <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
+            <span className="text-amber-400">❓</span> {dongName} 출장마사지 자주 묻는 질문
+          </h2>
+          <div className="space-y-3 text-xs md:text-sm">
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1">
+              <h3 className="font-bold text-amber-300">Q. {dongName}에서 예약 시 예약금이나 선입금이 있나요?</h3>
+              <p className="text-gray-400 leading-relaxed">
+                아닙니다. 홈타이존 제휴처는 일체의 선입금을 요구하지 않습니다. 관리사가 도착한 뒤 확인하시고 결제하는 100% 현장 후불제입니다.
+              </p>
+            </div>
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1">
+              <h3 className="font-bold text-amber-300">Q. 늦은 심야 시간에도 {dongName} 방문이 가능한가요?</h3>
+              <p className="text-gray-400 leading-relaxed">
+                네, 24시간 연중무휴로 운영되며 심야 시간대에도 추가 할증 없이 주간과 동일한 투명한 정찰제로 이용하실 수 있습니다.
+              </p>
+            </div>
+            <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1">
+              <h3 className="font-bold text-amber-300">Q. {dongName} 기준 어떤 코스를 가장 많이 이용하나요?</h3>
+              <p className="text-gray-400 leading-relaxed">
+                처음 이용하시는 분들은 부드러운 아로마 90분 또는 근육 뭉침을 시원하게 풀어주는 타이 90분 코스를 가장 선호하십니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 🌟 SEO 누락 방지 3: 인접 동 연계 내부 링크 (Internal Links) */}
+        {nearbyDongs.length > 0 && (
+          <section className="bg-[#121214] border border-white/10 p-5 md:p-6 rounded-3xl space-y-3 shadow-md">
+            <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <h2 className="text-xs md:text-sm font-bold text-gray-300 flex items-center gap-2">
+                <span className="text-amber-400">📍</span> {dongName} 인근 {districtName} 다른 지역 둘러보기
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {nearbyDongs.map((nearDong, idx) => (
+                <Link
+                  key={idx}
+                  href={`/${city}/${district}/${encodeURIComponent(nearDong)}`}
+                  className="px-3 py-1.5 rounded-xl border border-white/10 bg-black/40 text-xs font-medium text-gray-400 hover:bg-amber-500/10 hover:text-amber-400 hover:border-amber-500/40 transition-all"
+                >
+                  {nearDong} 출장마사지 &rarr;
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
       </main>
 
       {/* 푸터 영역 */}
@@ -456,7 +531,7 @@ export default async function DongMainPage({ params }: PageProps) {
           {SITE_NAME} (HomeThaiZone) · {fullLocation} 100% 안심 후불제 출장 홈케어
         </p>
         <p className="text-[11px] text-gray-600 mt-1">
-          © 2026 {SITE_NAME}. All rights reserved. (공식 웹사이트: {SITE_URL}/{city}/{district}/{encodeURIComponent(dong)})
+          © 2026 {SITE_NAME}. All rights reserved. (공식 웹사이트: {SITE_URL}/{city}/${district}/{encodeURIComponent(dong)})
         </p>
       </footer>
     </div>
