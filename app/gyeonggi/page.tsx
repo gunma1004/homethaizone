@@ -293,4 +293,14 @@ export default function GyeonggiRegionPage() {
       {/* 푸터 영역 */}
       <footer className="bg-[#030303] border-t border-white/10 py-10 text-center text-xs text-gray-500 mt-20">
         <div className="max-w-6xl mx-auto px-4 space-y-2">
-          <p className="font-bold text-gray-400
+          <p className="font-bold text-gray-400">
+            {SITE_NAME} (HomeThaiZone) · 경기도 전 지역 100% 안심 후불제 출장 케어
+          </p>
+          <p className="text-[11px] text-gray-600">
+            © 2026 {SITE_NAME}. All rights reserved. (공식 웹사이트: {SITE_URL}/gyeonggi)
+          </p>
+        </div>
+      </footer>
+    </main>
+  );
+}
