@@ -26,9 +26,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.png",
+  },
   verification: {
     other: {
-      // 네이버 서치어드바이저 등록 후 발급받은 키를 넣어주세요
       "naver-site-verification": "1e793a8b3340c6956056198e4b985be1db40a74b",
     },
   },
@@ -54,6 +57,7 @@ export const metadata: Metadata = {
     title: "서울·경기·인천 출장 프라이빗 마사지 | 홈타이존",
     description:
       "서울·경기·인천에서 출장마사지를 홈타이존에서 살펴보세요. 프라이빗·스웨디시 타이 아로마 등 다양한 구성과 60·90·120분 코스의 시간·금액을 한눈에 확인할 수 있습니다.",
+    images: ["/og-main.png"],
   },
   robots: {
     index: true,
@@ -73,8 +77,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 🌟 네이버와 구글이 브랜드명('홈타이존')을 검색 결과에 우선 바인딩하도록 돕는 WebSite JSON-LD
+  const siteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    alternateName: "홈타이존 출장마사지",
+    url: SITE_URL,
+  };
+
   return (
     <html lang="ko">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+        />
+      </head>
       <body className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black antialiased">
         {children}
       </body>
