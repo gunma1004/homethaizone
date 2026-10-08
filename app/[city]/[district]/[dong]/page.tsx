@@ -628,7 +628,7 @@ export default async function DongMainPage({ params }: PageProps) {
         {/* 지역 검색 맞춤 FAQ */}
         <section className="bg-[#121214] border border-white/10 p-6 md:p-8 rounded-3xl space-y-4 shadow-md">
           <h2 className="text-base md:text-lg font-bold text-white flex items-center gap-2">
-            <span className="text-amber-400">❓</span> {dongName} 출장마사지 자주 묻는 질문
+            <span className="text-amber-400">❓</span> {dongName} 출장 홈케어 마사지 자주 묻는 질문
           </h2>
           <div className="space-y-3 text-xs md:text-sm">
             <div className="bg-black/40 border border-white/5 p-4 rounded-2xl space-y-1">
